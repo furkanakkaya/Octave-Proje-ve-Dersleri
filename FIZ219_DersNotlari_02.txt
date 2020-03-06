@@ -1,0 +1,206 @@
+%{
+FİZ219 - Bilgisayar Programlama I dersi için uygulama notları
+Emre S. Taşcı <emre.tasci@hacettepe.edu.tr>
+03/11/2019
+
+2. Uygulama Notları:
+--------------------
+Trigonometrik fonksiyonlar
+Vektörlerin skaler çarpımı ve aralarındaki açının bulunması
+Grafik çizimi
+%}
+
+octave:1> % 30 derecenin sinüsünü hesaplayalım:
+octave:1> a = sin(30)
+a = -0.98803
+octave:2> % ???? Pek aklımızdaki sonuç (1/2 = 0.5) çıkmadı. Sorun nerede?
+octave:2> % Sorun, açılar için gerçek birimin derece değil, radyan olmasında!
+octave:2> % 30 derece kaç radyan ediyordu?
+octave:2> % ("180 derece ... pi radyan ise, 30 derece ... x radyan olur" - Doğru Orantı)
+octave:2> b = 30*pi/180
+b =  0.52360
+octave:3> a = sin(b)
+a =  0.50000
+octave:4> % Dikkat ettiyseniz, pi sabiti, Octave'da halihazırda tanımlı geliyor:
+octave:4> pi
+ans =  3.1416
+octave:5> % Aslında size gösterilenden daha yüksek hassasiyette tutuluyor. 
+octave:5> % Henüz görmediğimiz printf() fonksiyonu ile bunu kontrol edebiliriz:
+octave:7> printf("%.15f\n",pi)
+3.141592653589793
+octave:8> % Her seferinde derece cinsinden verilen açıyı pi ile çarpıp,
+octave:8> % ardından 180'e bölmek çok sıkıcı olacağından, bunu göz önünde
+octave:8> % bulundurup, trigonometrik fonksiyonların, derece ile çalışan
+octave:8> % versiyonlarını yapmışlar: sind(), cosd(), tand(), ... gibi.
+octave:8> a = sind(30)
+a =  0.50000
+octave:9> % Sinüsü 0.5 olan açı kaç derecedir?
+octave:9> b = asind(0.5)
+b =  30.000
+octave:10> % asind : ArcSin (derece) fonksiyonu.
+octave:10> c = asin(0.5)
+c =  0.52360
+octave:11> % Bu da radyanla çalışan ArcSin versiyonu
+
+octave:57> % a iki boyutlu, 5 birim uzunluğunda, yatay eksenle arasındaki açı 36.87 derece olan
+octave:57> % bir vektör olsun:
+octave:57> a_boy = 5
+a_boy =  5
+octave:58> a_aci = 36.87
+a_aci =  36.870
+octave:59> % a'nın x bileşenini bulmak için boyunu açının kosinüsü ile; y bileşeni için de sinüsü
+octave:59> % ile çarparız:
+octave:59> a_x = a_boy * cosd(a_aci)
+a_x =  4.0000
+octave:60> a_y = a_boy * sind(a_aci)
+a_y =  3.0000
+octave:61> % Artık bileşenlerini bildiğimize göre, a vektörünü "vektör" olarak yazabiliriz:
+octave:61> a = [a_x a_y]
+a =
+
+   4.0000   3.0000
+octave:62> % Bize başta bileşenleri verilmiş olsaydı, a vektörünün boyunu
+octave:62> % bileşenlerinin kareleri toplamının kökü olarak; yatayla yaptığı açıyı da
+octave:62> % y bileşeninin x bileşenine oranının arctanjantından hesaplayabilirdik:
+octave:62> sqrt(a(1)^2 + a(2)^2)
+ans =  5
+octave:63> atand(a(2)/a(1))
+ans =  36.870
+
+octave:64> % İki vektörün skaler çarpımı: vektörlerin büyükleri ile aralarındaki açının
+octave:64> % kosinüsünün çarpımı olarak tanımlanır: a.b = |a|.|b|.Cos(theta)
+octave:64> % Vektörlerin boylarını yukarıdaki gibi karelerinin toplamının kökünü hesaplayarak,
+octave:64> % ya da hazır olan norm() fonksiyonu ile bulabiliriz:
+octave:64> a
+a =
+
+   4.0000   3.0000
+
+octave:65> norm(a)
+ans =  5
+octave:66> % İkinci bir b vektörü tanımlayalım, bu vektör 2. bölgede olsun (y bileşeni pozitif, 
+octave:66> % x bileşeni negatif olan bölgede):
+octave:66> b = [-5 7]
+b =
+
+  -5   7
+
+octave:67> % Skaler çarpımın alternatif formülü (birim vektör notasyonundan):
+octave:67> % a.b = a_x*b_x + a_y*b_y
+octave:67> % c sayısı, a ile b vektörlerinin skaler çarpımı olsun:
+octave:67> c = a(1)*b(1) + a(2)*b(2)
+c =  1.0001
+octave:69> % (burada sondaki .0001 aslında verilerin hafızada tutulduğu sırada olan bir taşma 
+octave:69> % hatasından dolayı yer almakta (floating error))
+
+octave:69> % Vektör çarpımları için de hazır fonksiyonumuz mevcut: dot(a,b):
+octave:69> c = dot(a,b)
+c =  1.0001
+
+octave:70> % İki vektörün arasındaki açıyı bulmak için, skaler çarpımın diğer tanımından
+octave:70> % yola çıkıp, iki denklemi eşitleyeceğiz:
+octave:70> % a.b = a_x*b_x + a_y*b_y = |a|.|b|.Cos(theta)
+octave:70> % Buradan Cos(theta) = (a_x*b_x + a_y*b_y) / (|a|.|b|) olur: 
+octave:70> ctheta = dot(a,b) / (norm(a) * norm(b))
+ctheta =  0.023251
+octave:71> % Hangi açının kosinüsü 0.023251 olur?
+octave:71> theta = acosd(ctheta)
+theta =  88.668
+
+
+
+octave:11> % -360'dan +360'a 0.1 artan bir aralık tanımlayalım:
+octave:11> t = -360:0.1:360;
+octave:12> % 0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360'ı içeren bir liste:
+octave:12> t = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330, 360]
+t =
+
+     0    30    60    90   120   150   180   210   240   270   300   330   360
+
+octave:13> % Bunu aralık kullanarak daha akıllıca ve rahatça da yapabiliriz:
+octave:13> t = 0:30:360
+t =
+
+     0    30    60    90   120   150   180   210   240   270   300   330   360
+
+octave:14> % Bu değerlere karşılık gelen sinüsleri hesaplayalım:
+octave:14> y = sind(t)
+y =
+
+ Columns 1 through 10:
+
+   0.00000   0.50000   0.86603   1.00000   0.86603   0.50000   0.00000  -0.50000  -0.86603  -1.00000
+
+ Columns 11 through 13:
+
+  -0.86603  -0.50000   0.00000
+octave:15> % Grafiğini çizdirelim:
+octave:15> plot(t,y)
+octave:28> % Grafik benziyor, ama biraz kaba gibi. 
+octave:28> % Bu arada, plot() fonksiyonu ilk parametre olarak x-ekseni değerlerini,
+octave:28> % ikinci parametre olarak karşılık gelen y-ekseni değerlerini,
+octave:28> % opsiyonel olarak, üçüncü parametre olarak da biçime karşılık gelen bilgiyi alır.
+octave:28> % Grafiğin kaba çıkmasının sebebi aslında bizim belirlediğimiz açılara karşılık 
+octave:28> % gelen değerlere noktaları koyup, aralarını düz çizgilerle birleştirmesi.
+octave:28> plot(t,y,"x")
+octave:29> % dediğimizde bu noktaları (yani t listesinin içindeki 0:30:360 aralığını oluşturan
+octave:29> % 13 değeri) açık olarak görebiliriz.
+octave:29> % plot() fonksiyonunun 3. parametresi olarak belirttiğimiz biçimde temel olarak:
+octave:29> % çizgi şekli, nokta şekli ve renk saptayabiliriz:
+octave:29> plot(t,y,"-or")
+octave:30> % Bize çizgilerle birleştirilmiş ("-"), dairelerle işaretlenmiş ("o"), kırmızı ("r" - red)
+octave:30> % grafik çizdirir.
+
+octave:30> % Daha hassas bir grafik için, daha çok veriye (daha çok noktaya) ihtiyaç var:
+octave:30> t = 0:0.01:360;
+octave:31> length(t)
+ans =  36001
+octave:32> y = sind(t);
+octave:33> plot(t,y)
+octave:34> % Bir grafiği dosya olarak kaydetmek için "print" komutunu kullanabiliriz:
+octave:34> print -dpng grafik1.png
+octave:35> % O anda gördüğümüz grafiği "grafik1.png" adında bir dosyaya png olarak kaydeder.
+octave:35> print -dpdf grafik1.pdf
+octave:36> % Bu da aynı işi pdf olarak yapar. Bu dosyalar bulunduğumuz yere kaydedilir.
+octave:36> % Nerede olduğumuzu bilmiyorsak "pwd" komutu ile öğrenebiliriz.
+octave:36> pwd
+ans = /tmp
+octave:37> % İşletim sisteminize ve bulunduğunuz yere göre sizin alacağınız cevap farklı olacaktır.
+
+octave:37> % Aralık tanımlamanın bir başka yolu da linspace() fonksiyonudur:
+octave:37> linspace(0,10,11)
+ans =
+
+    0    1    2    3    4    5    6    7    8    9   10
+
+octave:38> % ilk parametre başlangıç, ikinci parametre bitiş, üçüncü de kaç değere bölüneceğidir.
+octave:38> % Sinüs ve kosinüs grafikleri çizelim. Bunun için de değer aralığımızı
+octave:38> % -360'tan +360'a 10000 nokta alalım:
+octave:38> t = linspace(-360,360,10000);
+octave:39> s = sind(t);
+octave:40> c = cosd(t);
+octave:41> plot(t,s,"-r"); % Bu bize sinüsleri kırmızı düz bir çizgi olarak çizdirir
+octave:44> plot(t,c,"--b"); % Bu da kosinüsleri mavi kesikli çizgi olarak çizdirir
+octave:45> % İki grafiği birlikte çizdirmek için:
+octave:45> plot(t,s,"-r",t,c,"--b")
+octave:46> % Üçüncü bir grafik olarak ikisinin toplamını çizdirmek isteseydik:
+octave:46> sc = s+c; % sinüs ve kosinüs değerlerini topluyoruz.
+octave:47> plot(t,s,"-r",t,c,"--b",t,sc,"-.m")
+
+octave:52> % Bir deney için 5 ölçüm yaptığımızı düşünelim: 
+octave:52> % x değerlerimizi belirleyip, karşılık gelen y değerlerini ölçmüş olalım
+octave:52> x = 1:5
+x =
+
+   1   2   3   4   5
+
+octave:53> y = [4.9142    7.1201    8.8456   10.8113   13.2231]
+y =
+
+    4.9142    7.1201    8.8456   10.8113   13.2231
+
+octave:54> % Değerlerimizi çizdirelim:
+octave:54> plot(x,y,"o")
+
+octave:57> % Epey doğrusal görünüyor, acaba hepsinin mümkün mertebe en yakınından geçen
+octave:57> % doğru denklemi nedir? (Bir sonraki uygulama notunda ;)

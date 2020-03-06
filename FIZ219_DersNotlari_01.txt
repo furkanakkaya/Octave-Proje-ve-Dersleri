@@ -1,0 +1,355 @@
+%{
+FİZ219 - Bilgisayar Programlama I dersi için uygulama notları
+Emre S. Taşcı <emre.tasci@hacettepe.edu.tr>
+03/11/2019
+
+1. Uygulama Notları:
+--------------------
+Değişken atama
+Vektörler
+Matrisler
+Aralık
+Basit işlemler
+
+%}
+
+octave:1> % Değişken atama:
+octave:1> a = 5
+a =  5
+octave:2> % "a" değişkeni şimdi 5 oldu. Kontrol edelim:
+octave:2> a
+a =  5
+octave:3> A = 7
+A =  7
+octave:4> a
+a =  5
+octave:5> A
+A =  7
+octave:6> % Demek ki büyük/küçük harf fark ediyor.
+octave:6> %a'yı 2 ile çarpıp, 6 ekleyelim:
+octave:6> a*2 + 6
+ans =  16
+octave:7> % Bu yeni hesabımızı sonradan kullanmak istersek diye, ona da bir ad verelim ("b")
+octave:7> b = a*2 + 6
+b =  16
+octave:8> % Şimdiye kadar tanımladığımız a, A ve b skaler büyüklükler.
+octave:8> % Yani sadece bir değerden ibaretler.
+octave:8> % Bir sonraki aşama: vektörler
+octave:8> % Vektörler, hem boyları, hem de yönleri olan büyüklükler.
+octave:8> % Bir şeyin yönünün olması demek, birbirinden bağımsız eksenlerde
+octave:8> % bileşenleri olduğu anlamına geliyor. 
+octave:9> % Sınıfın içinde bir noktayı işaret eden, doğal olarak 3 boyutlu bir vektör düşünelim:
+octave:9> v = [2 3 1]
+v =
+
+   2   3   1
+
+octave:10> % Bir excel tablosunda tek bir satır veya sütuna yazdığınız veri bir vektördür.
+octave:10> % Satır/sütun sayısı onun kaç boyutlu olduğunu verir.
+octave:10> % Örneğin: "Ahmet","215292","1.75","77","67.8","72.6","90.4" 
+octave:10> % şeklindeki bir satır (ad/numara/boy/kilo/1. ara sınav/2. ara sınav/genel sınav)
+octave:10> % 7 boyutlu bir vektörü tanımlar.
+octave:10> % Şimdilik bu vektörün sadece sayısal olan kısımları ile ilgileneceğiz:
+octave:10> o = [215292 1.75 77 67.8 72.6 90.4]
+o =
+
+   215292.00000        1.75000       77.00000       67.80000       72.60000       90.40000
+
+octave:11> % Bir v vektörünün n. bileşenine v(n) şeklinde erişebiliriz.
+octave:11> % Örneğin biraz önce tanımladığımız "o" vektörünün 4. girdisi olan birinci ara sınav notunu
+octave:11> o(4)
+ans =  67.800
+octave:12> % ile çağırabildik.
+octave:12> % Birinci ve ikinci ara sınav notlarını nasıl çağırabiliriz?
+octave:12> % Bu, vektörümüzün hem 4., hem de 5. elemanlarını çağırmak anlamına geliyor:
+octave:12> o([4 5])
+ans =
+
+   67.800   72.600
+
+octave:13> % Buradan yola çıkarak, numara (1.) ile genel sınav notunu (6.) çağıralım:
+octave:13> o([1 6])
+ans =
+
+   215292.00000       90.40000
+
+octave:14> % Yıl sonu ortalamasına ara sınavların katkısı %60, genel sınavın katkısı %40 olsun,
+octave:14> % Ortalamayı hesaplayalım:
+octave:14> ortalama = ((o(4) + o(5))/2 * 0.6) + (o(6) * 0.4)
+ortalama =  78.280
+
+octave:15> % Vektörlerin kümesi matrisleri oluşturur. Matrisleri excel'deki bir çalışma sayfası o
+octave:15> % Vektörlerin kümesi matrisleri oluşturur.
+octave:15> % Matrisleri excel'deki bir çalışma sayfası olarak düşünebiliriz.
+octave:15> % Örneğin, bir önce yaptığımız öğrenci vektöründen iki tane düşünelim:
+octave:15> ogrenci_1 = [215292 1.75 77 67.8 72.6 90.4]
+ogrenci_1 =
+
+   215292.00000        1.75000       77.00000       67.80000       72.60000       90.40000
+
+octave:16> ogrenci_2 = [216276 1.70 82 70.2 75.9 80.5]
+ogrenci_2 =
+
+   216276.00000        1.70000       82.00000       70.20000       75.90000       80.50000
+
+octave:17> % İki öğrenciye dair bilgiye bir matriste toplayalım:
+octave:17> m = [ 215292 1.75 77 67.8 72.6 90.4
+> 216276 1.70 82 70.2 75.9 80.5 ]
+m =
+
+   215292.00000        1.75000       77.00000       67.80000       72.60000       90.40000
+   216276.00000        1.70000       82.00000       70.20000       75.90000       80.50000
+
+octave:18> % İkinci öğrencinin, birinci ara sınav notuna erişmek istersek,
+octave:18> % Bunun 2. satırın, 4. sütununda tutulduğunu görürüz, yani:
+octave:18> m(2,4)
+ans =  70.200
+octave:19> % Matrisimiz, 2 satırlı, 6 sütunlu bir matris:
+octave:19> size(m)
+ans =
+
+   2   6
+
+octave:20> rows(m)
+ans =  2
+octave:21> columns(m)
+ans =  6
+octave:22> % 1. ara sınav notlarını alalım:
+octave:22> m([1 2], 4)
+ans =
+
+   67.800
+   70.200
+
+octave:23> % (yani "1. ve 2. satırların 4. sütununu getir" demiş olduk)
+octave:23> % Numara, ara sınavlar ve genel sınavı getirelim:
+octave:23> m([1 2], [1 4 5 6])
+ans =
+
+   215292.00000       67.80000       72.60000       90.40000
+   216276.00000       70.20000       75.90000       80.50000
+
+octave:24> % Octave'da "hepsi" için ":" işaretini kullanabiliriz, 
+octave:24> % Bütün satırları kast etmek için [1 2] yerine "hepsi" anlamında
+octave:24> % ":" kullanalım
+octave:24> m(:,[1 4 5 6])
+ans =
+
+   215292.00000       67.80000       72.60000       90.40000
+   216276.00000       70.20000       75.90000       80.50000
+
+octave:25> % Benzer şekilde, 2. satırın bütün sütunları için de:
+octave:25> m(2,:)
+ans =
+
+   216276.00000        1.70000       82.00000       70.20000       75.90000       80.50000
+octave:26> % Vektörleri aynı zamanda sayı dizileri olarak da düşünebiliriz:
+octave:26> l = [ 1 7 -2 4 10 11 4 0 -5 -7]
+l =
+
+    1    7   -2    4   10   11    4    0   -5   -7
+
+octave:27> % 10 elemanlı bir dizi (/vektör) tanımlamış olduk.
+octave:27> % Bir dizinin eleman sayısını "length" komutu ile öğrenebiliriz:
+octave:27> length(l)
+ans =  10
+octave:28> % Bu dizinin 3., 7. ve 10. elemanlarını çağıralım:
+octave:28> l([3 7 10])
+ans =
+
+  -2   4  -7
+
+octave:29> % Dizimizin 5. elemanını 10 yerine -3 olarak değiştirelim:
+octave:29> l(5) = -3
+l =
+
+    1    7   -2    4   -3   11    4    0   -5   -7
+
+octave:30> % Dizimizin 3. elemanından 7. elemanına kadar olan kısmı çağıralım:
+octave:30> l([3 4 5 6 7])
+ans =
+
+   -2    4   -3   11    4
+
+octave:31> % Bu çağırma işlemi biraz uzun sürebilir, o yüzden ardışık sayıları
+octave:31> % {başlangıç}:{bitiş} olarak tanımlayabiliriz.
+octave:31> % Örneğin, 3'ten 7'ye kadar (7 dahil) sayıları:
+octave:31> 3:7
+ans =
+
+   3   4   5   6   7
+
+octave:32> % olarak yazabiliriz. Bu durumda, dizimizin 3. elemanından 7. elemanına 
+octave:32> % kadar olan kısmı tekrar çağıralım:
+octave:33> l([3:7])
+ans =
+
+   -2    4   -3   11    4
+
+octave:39> % Bir listeye bir işlem yaptığınızda,
+octave:39> % listenin her bir elemanına o işlemi yapmış olursunuz:
+octave:39> l
+l =
+
+    1    7   -2    4   -3   11    4    0   -5   -7
+
+octave:40> l * 2
+ans =
+
+    2   14   -4    8   -6   22    8    0  -10  -14
+
+octave:41> l * 2 - 5
+ans =
+
+   -3    9   -9    3  -11   17    3   -5  -15  -19
+
+
+octave:34> % v matrisimizi hatırlayalım:
+octave:34> v
+v =
+
+   2   3   1
+
+octave:35> % v, bir "satır matrisi". Matrisler satır ve sütun matrisi olarak ikiye ayrılır.
+octave:35> % u adında bir sütun matrisi tanımlayalım. Bunu iki türlü yapabiliriz:
+octave:35> % 1. olarak her satır sonunda <enter>'a basıp yeni satıra geçerek:
+octave:35> u = [2
+> 3
+> 1]
+u =
+
+   2
+   3
+   1
+
+octave:36> % 2. olarak da, <enter>'a basmak yerine ";" kullanarak:
+octave:36> u = [2; 3; 1]
+u =
+
+   2
+   3
+   1
+
+octave:37> % Matris tanımlarken de yaklaşım aynıdır. 4x3'lük bir matris tanımlayalım:
+octave:37> m = [2 3 -3; -2 0 4; -3, 4, -1; 4 2 -2]
+m =
+
+   2   3  -3
+  -2   0   4
+  -3   4  -1
+   4   2  -2
+
+octave:38> % Matrisi tanımlarken, dikkat ederseniz 3. satırı "," ile ayırdık.
+octave:38> % Virgül ile boşluk aynı görevi görürler (<enter> ile ";" gibi).
+octave:38> % m matrisinin 2., 3. ve 4. satırlarının 2. ve 3. sütunlarını alalım:
+octave:38> m([2:4],[2 3])
+ans =
+
+   0   4
+   4  -1
+   2  -2
+
+octave:42> % Tıpkı listeler gibi, matrislere de işlem yaptığınızda,
+octave:42> % o işlemi de her bir elemanına yapmış olursunuz:
+octave:42> 2 * m - 5
+ans =
+
+   -1    1  -11
+   -9   -5    3
+  -11    3   -7
+    3   -1   -9
+
+octave:43> % Bazı işlemleri matrislere bütün olarak yapabildiğinizden ötürü
+octave:43> % karmaşa çıkabilir. Örneğin kare alma işlemini düşünelim.
+octave:43> % Basit, 2x2 bir matris tanımlayalım:
+octave:43> n = [1 2;3 4]
+n =
+
+   1   2
+   3   4
+
+octave:44> % n^2 yazdığınızda matrisi kendisi ile çarpmayı mı istiyorsunuz,
+octave:44> % yoksa her bir elemanının karesini mi almayı?
+
+octave:44> % n^2 yazdığınızda matrisi kendisi ile çarpmayı mı istiyorsunuz,
+octave:44> % yoksa her bir elemanının karesini mi almayı?
+octave:44> % Octave, her zaman için matris işlemi olarak bir tanım varsa,
+octave:44> % onu baz alır. Yani, n^2 = n * n olarak yorumlanır:
+octave:44> n^2
+ans =
+
+    7   10
+   15   22
+
+octave:45> % (7 = 1*1 + 2 * 3; 10 = 1*2 + 2*4; 15 = 3*1 + 4*3; 22 = 3*2 + 4*4)
+octave:45> % (Matris çarpımını henüz öğrenmediyseniz, dert etmeyin ;)
+octave:45> % Eğer özellikle elemanlara işlem yapılmasını istiyorsak, o zaman
+octave:45> % karmaşaya yol açabilecek işlemin başına "." koymalıyız:
+octave:45> n.^2
+ans =
+
+    1    4
+    9   16
+
+octave:46> % ":" işaretinin yalnız başına kullanıldığında "tümü",
+octave:46> % iki sayı arasında kullanıldığında da "o iki sayıyı da içeren aralık"
+octave:46> % anlamına geldiğini görmüştük.
+octave:47> x = -4:6
+x =
+
+  -4  -3  -2  -1   0   1   2   3   4   5   6
+octave:48> % Araya koyacağımız üçüncü bir sayı atlama miktarını belirtir.
+octave:48> % Örneğin, -4'ten 6'ya kadar ikişer ikişer artmasını istiyorsak:
+octave:48> x = -4:2:6
+x =
+
+  -4  -2   0   2   4   6
+octave:49> % 15'ten 9'a nasıl geri geri sayarız? Zira:
+octave:49> y = 15:9
+y = [](1x0)
+octave:50> % Boş küme veriyor. -1 adımla gitmeyi deneyelim:
+octave:50> y = 15:-1:9
+y =
+
+   15   14   13   12   11   10    9
+octave:52> % -360'dan +360'a bir aralık tanımlayalım:
+octave:52> t = -360:360
+t =
+
+ Columns 1 through 17:
+
+  -360  -359  -358  -357  -356  -355  -354  -353  -352  -351  -350  -349  -348  -347  -346  -345  -344
+
+ Columns 18 through 34:
+
+  -343  -342  -341  -340  -339  -338 (...)
+ Columns 698 through 714:
+
+   337   338   339   340   341   342   343   344   345   346   347   348   349   350   351   352   353
+
+ Columns 715 through 721:
+
+   354   355   356   357   358   359   360
+
+octave:53> % ne kadar uzun sürdü, ekran doldu taştı! Ya bir de birer birer arttırmak yerine
+octave:53> % 0.1'er arttırmış olsaydık!!! ( "t = -360:0.1:360" gibi)
+octave:53> % Normalde, biz aksini demedikçe, Octave yaptığı her işlemin sonucunu bize gösterir.
+octave:53> % Şimdiki örnekte olduğu üzere, bazen bunu görmek istemeyebiliriz (yapsın yeter).
+octave:53> % Böyle durumlarda komutumuzu ";" ile bitiririz
+octave:53> a = 5
+a =  5
+octave:54> a 
+a =  5
+octave:55> a = 7;
+octave:56> a
+a =  7
+octave:57> t = -360:0.1:360;
+octave:58> % t'nin kaç elemanı var?
+octave:58> length(t)
+ans =  7201
+octave:59> % ilk iki ve son iki elemanı kaçmış?
+octave:59> t([1 2 7200 7201])
+ans =
+
+  -360.00  -359.90   359.90   360.00
+
